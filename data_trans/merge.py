@@ -5,7 +5,7 @@ def read_csv_file(file_path):
     return pd.read_csv(file_path)
 
 # 处理数据，每五行取均值
-def process_data(df):
+def process_data_merge(df):
     # 将 TimeUnix 转换为日期时间格式a
     df['TimeUnix'] = pd.to_datetime(df['TimeUnix'])
 
@@ -62,7 +62,7 @@ def merge_files(output_dir, processed_dir, merged_output_dir):
                 print(f"跳过文件: {output_file}，因为 processed_metrics 目录下没有匹配的文件")
 
 
-def process_csv_file(input_path, output_path):
+def process_csv_file_merge(input_path, output_path):
     # 读取 CSV 文件
     df = pd.read_csv(input_path)
 
@@ -109,7 +109,7 @@ def trans_nezha(merged_data):
             output_path = os.path.join(merged_data, filename)
 
             # 处理每个 CSV 文件
-            process_csv_file(input_path, output_path)
+            process_csv_file_merge(input_path, output_path)
 
 # 主函数
 def main(input_folder):
@@ -124,10 +124,13 @@ def main(input_folder):
                 df = read_csv_file(input_file)
 
                 # 处理数据
-                result = process_data(df)
+                result = process_data_merge(df)
 
                 # 保存结果
                 save_to_csv(result, output_file)
+                append_dir = os.path.join('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/1021/Nezha/metric', filename)
+                file_exists = os.path.isfile(append_dir)
+                result.to_csv(append_dir, mode='a', header=not file_exists, index=False)
                 print(f"结果已保存到 {output_file}")
 
             except KeyError as e:
@@ -137,12 +140,11 @@ def main(input_folder):
                 print(f"处理文件 {filename} 时发生错误：{e}")
 
 
-"""
-示例输入
+
 if __name__ == "__main__":
     input_folder = 'processed_metrics'  # 替换为你的输入文件夹路径
-    output_dir = 'output_files'  # 输出文件夹路径
-    merged_output_dir = 'merged_output'  # 合并输出文件夹路径
+    output_dir = '../output_files'  # 输出文件夹路径
+    merged_output_dir = 'Nezha/1021/merged_output'  # 合并输出文件夹路径
 
     # 如果输出文件夹不存在，则创建它
     if not os.path.exists(input_folder):
@@ -151,5 +153,3 @@ if __name__ == "__main__":
     main(input_folder)
     merge_files(output_dir, input_folder, merged_output_dir)
     trans_nezha(merged_output_dir)
-"""
-

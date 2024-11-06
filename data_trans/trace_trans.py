@@ -1,8 +1,9 @@
 import pandas as pd
 from datetime import datetime
+import os
 
 
-def calculate_end_time_unix_nano(csv_file):
+def calculate_end_time_unix_nano(csv_file, outputfile):
     # Read the CSV file
     df = pd.read_csv(csv_file)
 
@@ -38,12 +39,9 @@ def calculate_end_time_unix_nano(csv_file):
     df['EndTimeUnixNano'] = end_time_nano_list
 
     # Save the updated DataFrame to a new CSV file
-    df.to_csv(csv_file, index=False)
+    df.to_csv(outputfile, index=False)
 
 
-
-import pandas as pd
-from datetime import datetime
 
 def process_trace_data(output_file):
     # Read the CSV file
@@ -83,15 +81,16 @@ def process_trace_data(output_file):
 
     # Create a DataFrame for the results
     results_df = pd.DataFrame(results)
+    file_exists = os.path.isfile('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/Nezha/trace.csv')
 
     # Save the updated DataFrame to a new CSV file
     results_df.to_csv(output_file, index=False)
+    results_df.to_csv('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/Nezha/trace.csv', mode='a', header=not file_exists, index=False)
 
 
-"""
 # Example usage
 if __name__ == "__main__":
-    csv_file = 'traces.csv'  # Replace with your input CSV file path
-    calculate_end_time_unix_nano(csv_file)
-    process_trace_data(csv_file)
-"""
+    csv_file = '../traces.csv'  # Replace with your input CSV file path
+    outputfile = 'Nezha/1021/trace'
+    calculate_end_time_unix_nano(csv_file, outputfile)
+    process_trace_data(outputfile)

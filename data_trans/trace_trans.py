@@ -89,8 +89,8 @@ def process_trace_data(output_file, trace_output_file):
 
 
 # Example usage
-if __name__ == "__main__":
-    csv_file = '../traces.csv'  # Replace with your input CSV file path
-    outputfile = 'Nezha/1021/trace'
-    calculate_end_time_unix_nano(csv_file, outputfile)
-    process_trace_data(outputfile)
+# if __name__ == "__main__":
+#     csv_file = '../traces.csv'  # Replace with your input CSV file path
+#     outputfile = 'Nezha/1021/trace'
+#     calculate_end_time_unix_nano(csv_file, outputfile)
+#     process_trace_data(outputfile)

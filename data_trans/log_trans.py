@@ -35,8 +35,8 @@ def modify_log_data(csv_file, output_file, log_output_file):
     df.to_csv(output_file, index=False)
     df.to_csv(log_output_file, mode='a', header=not file_exists, index=False)
 
-# Example usage
-if __name__ == "__main__":
-    csv_file = '../logs.csv'  # Replace with your input CSV file path
-    output_file = '../Nezha/log.csv'  # Replace with your desired output CSV file path
-    modify_log_data(csv_file, output_file)
+# # Example usage
+# if __name__ == "__main__":
+#     csv_file = '../logs.csv'  # Replace with your input CSV file path
+#     output_file = '../Nezha/log.csv'  # Replace with your desired output CSV file path
+#     modify_log_data(csv_file, output_file)

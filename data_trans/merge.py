@@ -138,16 +138,16 @@ def main(input_folder, output_folder):
 
 
 
-if __name__ == "__main__":
-    input_folder = 'processed_metrics'  # 替换为你的输入文件夹路径
-    output_folder = 'Nezha_processed_metrics'
-    output_dir = '../output_files'  # 输出文件夹路径
-    merged_output_dir = 'Nezha/1021/merged_output'  # 合并输出文件夹路径
+# if __name__ == "__main__":
+#     input_folder = 'processed_metrics'  # 替换为你的输入文件夹路径
+#     output_folder = 'Nezha_processed_metrics'
+#     output_dir = '../output_files'  # 输出文件夹路径
+#     merged_output_dir = 'Nezha/1021/merged_output'  # 合并输出文件夹路径
 
-    # 如果输出文件夹不存在，则创建它
-    if not os.path.exists(input_folder):
-        os.makedirs(input_folder)
+#     # 如果输出文件夹不存在，则创建它
+#     if not os.path.exists(input_folder):
+#         os.makedirs(input_folder)
 
-    main(input_folder, output_folder)
-    merge_files(output_dir, output_folder, merged_output_dir)
-    trans_nezha(merged_output_dir)
+#     main(input_folder, output_folder)
+#     merge_files(output_dir, output_folder, merged_output_dir)
+#     trans_nezha(merged_output_dir)

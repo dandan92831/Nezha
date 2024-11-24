@@ -199,8 +199,8 @@ def main(input_file, output_folder):
 
 
 
-if __name__ == "__main__":
-    input_file = '../request_metrics.csv'
-    output_folder = 'output_files'
-    main(input_file, output_folder)
-    process_folder(output_folder, output_folder)
+# if __name__ == "__main__":
+#     input_file = '../request_metrics.csv'
+#     output_folder = 'output_files'
+#     main(input_file, output_folder)
+#     process_folder(output_folder, output_folder)

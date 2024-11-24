@@ -43,7 +43,7 @@ def calculate_end_time_unix_nano(csv_file, outputfile):
 
 
 
-def process_trace_data(output_file):
+def process_trace_data(output_file, trace_output_file):
     # Read the CSV file
     df = pd.read_csv(output_file)
 
@@ -81,11 +81,11 @@ def process_trace_data(output_file):
 
     # Create a DataFrame for the results
     results_df = pd.DataFrame(results)
-    file_exists = os.path.isfile('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/trace.csv')
+    file_exists = os.path.isfile(trace_output_file)
 
     # Save the updated DataFrame to a new CSV file
     results_df.to_csv(output_file, index=False)
-    results_df.to_csv('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/trace.csv', mode='a', header=not file_exists, index=False)
+    results_df.to_csv(trace_output_file, mode='a', header=not file_exists, index=False)
 
 
 # Example usage

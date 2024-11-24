@@ -102,12 +102,12 @@ def process_csv_file_merge(input_path, output_path):
     df.to_csv(output_path, mode='a', header=not file_exists, index=False)
     print(f"Processed file saved to {output_path}")
 
-def trans_nezha(merged_data):
+def trans_nezha(merged_data, metric_output_path):
     # 遍历输入文件夹中的所有 CSV 文件
     for filename in os.listdir(merged_data):
         if filename.endswith('.csv'):
             input_path = os.path.join(merged_data, filename)
-            output_path = os.path.join('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/metric', filename)
+            output_path = os.path.join(metric_output_path, filename)
             # 处理每个 CSV 文件
             process_csv_file_merge(input_path, output_path)
 

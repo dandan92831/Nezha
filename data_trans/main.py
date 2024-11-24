@@ -21,13 +21,13 @@ from merge import merge_files
 from merge import process_csv_file_merge
 from merge import trans_nezha
 
-def log_trans_runner(input_dir, output_dir):
-    modify_log_data(input_dir, output_dir)
+def log_trans_runner(input_dir, output_dir, log_output_file):
+    modify_log_data(input_dir, output_dir, log_output_file)
 
 
-def trace_trans_runner(input_dir, output_dir):
+def trace_trans_runner(input_dir, output_dir, trace_output_path):
     calculate_end_time_unix_nano(input_dir, output_dir)
-    process_trace_data(output_dir)
+    process_trace_data(output_dir, trace_output_file)
 
 def metric_runner(input_dir, output_dir):
     df = read_csv_file(input_dir)
@@ -65,7 +65,7 @@ def metric_runner(input_dir, output_dir):
             print(f"Updated and saved {file_path}")
     process_folder(output_dir, output_dir)
     
-def merge_runner(input_dir, output_dir, merged_output_dir, output_folder):
+def merge_runner(input_dir, output_dir, merged_output_dir, output_folder, metric_output_path):
     if not os.path.exists(input_dir):
         os.makedirs(input_dir)
     if not os.path.exists(output_folder):
@@ -92,7 +92,7 @@ def merge_runner(input_dir, output_dir, merged_output_dir, output_folder):
             except Exception as e:
                 print(f"处理文件 {filename} 时发生错误：{e}")
     merge_files(output_dir, output_folder, merged_output_dir)
-    trans_nezha(merged_output_dir)
+    trans_nezha(merged_output_dir, metric_output_path)
 
 def main():
     prefix_dirs = [
@@ -124,6 +124,9 @@ def main():
     ]
     for prefix_dir in prefix_dirs:
         dir = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir)
+        log_output_path = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/log.csv'
+        trace_output_path = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/trace.csv'
+        metric_output_path = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/metric'
         input_dir_log = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset' / Path(prefix_dir) / 'abnormal/logs.csv'
         output_dir_log = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_log.csv'
         input_dir_trace = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset' / Path(prefix_dir) / 'abnormal/traces.csv'
@@ -134,16 +137,19 @@ def main():
         output_dir_merge = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_output_files'
         output_dir_merge_output = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_merged_output'
         output_folder = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'abnormal/Nezha_processed_metrics'
+        # log/ trace/ metric_output_path改成最终结果想保存的位置
+        # input_dir改前缀用户名
+        # output将前缀改成本地任意文件夹
         if not os.path.exists(dir):
             os.makedirs(dir)
         if not os.path.exists(output_dir_merge):
             os.makedirs(output_dir_merge)
         if not os.path.exists(output_dir_merge_output):
             os.makedirs(output_dir_merge_output)
-        log_trans_runner(input_dir_log, output_dir_log)
-        trace_trans_runner(input_dir_trace, output_dir_trace)
+        log_trans_runner(input_dir_log, output_dir_log, log_output_path)
+        trace_trans_runner(input_dir_trace, output_dir_trace,trace_output_path)
         metric_runner(input_dir_metric, output_dir_metric)
-        merge_runner(input_dir_merge, output_dir_merge, output_dir_merge_output, output_folder)
+        merge_runner(input_dir_merge, output_dir_merge, output_dir_merge_output, output_folder, metric_output_path)
 
 if __name__ == "__main__":
     main()

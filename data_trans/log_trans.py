@@ -29,11 +29,11 @@ def modify_log_data(csv_file, output_file):
     df = df[new_order]
 
     # Check if the output file already exists
-    file_exists = os.path.isfile('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/Nezha/log.csv')
+    file_exists = os.path.isfile('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/log.csv')
 
     # Save the updated DataFrame to a new CSV file, appending if it exists
     df.to_csv(output_file, index=False)
-    df.to_csv('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/Nezha/log.csv', mode='a', header=not file_exists, index=False)
+    df.to_csv('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/log.csv', mode='a', header=not file_exists, index=False)
 
 # Example usage
 if __name__ == "__main__":

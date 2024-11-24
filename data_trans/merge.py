@@ -98,7 +98,8 @@ def process_csv_file_merge(input_path, output_path):
     df = df[column_order]
 
     # 将处理后的数据写入新的 CSV 文件
-    df.to_csv(output_path, index=False)
+    file_exists = os.path.isfile(output_path)
+    df.to_csv(output_path, mode='a', header=not file_exists, index=False)
     print(f"Processed file saved to {output_path}")
 
 def trans_nezha(merged_data):
@@ -106,18 +107,17 @@ def trans_nezha(merged_data):
     for filename in os.listdir(merged_data):
         if filename.endswith('.csv'):
             input_path = os.path.join(merged_data, filename)
-            output_path = os.path.join(merged_data, filename)
-
+            output_path = os.path.join('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/metric', filename)
             # 处理每个 CSV 文件
             process_csv_file_merge(input_path, output_path)
 
 # 主函数
-def main(input_folder):
+def main(input_folder, output_folder):
     # 遍历输入文件夹中的所有CSV文件
     for filename in os.listdir(input_folder):
         if filename.endswith('.csv'):
             input_file = os.path.join(input_folder, filename)
-            output_file = os.path.join(input_folder, f'{filename}')
+            output_file = os.path.join(output_folder, f'{filename}')
 
             try:
                 # 读取数据
@@ -128,9 +128,6 @@ def main(input_folder):
 
                 # 保存结果
                 save_to_csv(result, output_file)
-                append_dir = os.path.join('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/1021/Nezha/metric', filename)
-                file_exists = os.path.isfile(append_dir)
-                result.to_csv(append_dir, mode='a', header=not file_exists, index=False)
                 print(f"结果已保存到 {output_file}")
 
             except KeyError as e:
@@ -143,6 +140,7 @@ def main(input_folder):
 
 if __name__ == "__main__":
     input_folder = 'processed_metrics'  # 替换为你的输入文件夹路径
+    output_folder = 'Nezha_processed_metrics'
     output_dir = '../output_files'  # 输出文件夹路径
     merged_output_dir = 'Nezha/1021/merged_output'  # 合并输出文件夹路径
 
@@ -150,6 +148,6 @@ if __name__ == "__main__":
     if not os.path.exists(input_folder):
         os.makedirs(input_folder)
 
-    main(input_folder)
-    merge_files(output_dir, input_folder, merged_output_dir)
+    main(input_folder, output_folder)
+    merge_files(output_dir, output_folder, merged_output_dir)
     trans_nezha(merged_output_dir)

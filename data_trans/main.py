@@ -65,13 +65,15 @@ def metric_runner(input_dir, output_dir):
             print(f"Updated and saved {file_path}")
     process_folder(output_dir, output_dir)
     
-def merge_runner(input_dir, output_dir, merged_output_dir):
+def merge_runner(input_dir, output_dir, merged_output_dir, output_folder):
     if not os.path.exists(input_dir):
         os.makedirs(input_dir)
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
     for filename in os.listdir(input_dir):
         if filename.endswith('.csv'):
             input_file = os.path.join(input_dir, filename)
-            output_file = os.path.join(input_dir, f'{filename}')
+            output_file = os.path.join(output_folder, f'{filename}')
 
             try:
                 # 读取数据
@@ -82,9 +84,6 @@ def merge_runner(input_dir, output_dir, merged_output_dir):
 
                 # 保存结果
                 save_to_csv(result, output_file)
-                append_dir = os.path.join('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/Nezha/metric', f'{filename}')
-                file_exists = os.path.isfile(append_dir)
-                result.to_csv(append_dir, mode='a', header=not file_exists, index=False)
                 print(f"结果已保存到 {output_file}")
 
             except KeyError as e:
@@ -92,88 +91,59 @@ def merge_runner(input_dir, output_dir, merged_output_dir):
 
             except Exception as e:
                 print(f"处理文件 {filename} 时发生错误：{e}")
-    merge_files(output_dir, input_dir, merged_output_dir)
+    merge_files(output_dir, output_folder, merged_output_dir)
     trans_nezha(merged_output_dir)
 
 def main():
     prefix_dirs = [
-        '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-basic-service-1024-1756',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-basic-service-1027-0246',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-basic-service-1027-0546',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-basic-service-1027-0846',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-basic-service-1027-1146',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-basic-service-1027-1446',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-basic-service-1027-1746',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-consign-service-1024-1636',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-consign-service-1027-0126',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-consign-service-1027-0426',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-consign-service-1027-0726',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-consign-service-1027-1026',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-consign-service-1027-1326',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-consign-service-1027-1626',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-food-service-1024-1816',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-food-service-1027-0306',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-food-service-1027-0606',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-food-service-1027-0906',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-food-service-1027-1206',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-food-service-1027-1506',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-food-service-1027-1806',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-route-service-1027-0146',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-route-service-1027-0446',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-route-service-1027-0746',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-route-service-1027-1046',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-route-service-1027-1346',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-route-service-1027-1646',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-seat-service-1024-1856',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-seat-service-1027-0346',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-seat-service-1027-0646',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-seat-service-1027-0946',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-seat-service-1027-1246',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-seat-service-1027-1546',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-seat-service-1027-1846',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-security-service-1024-1836',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-security-service-1027-0326',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-security-service-1027-0626',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-security-service-1027-0926',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-security-service-1027-1226',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-security-service-1027-1526',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-security-service-1027-1826',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-train-service-1024-1716',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-train-service-1027-0206',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-train-service-1027-0506',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-train-service-1027-0806',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-train-service-1027-1106',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-train-service-1027-1406',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-train-service-1027-1706',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel-service-1024-1736',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel-service-1027-0226',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel-service-1027-0526',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel-service-1027-0826',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel-service-1027-1126',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel-service-1027-1426',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel-service-1027-1726',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel2-service-1024-1936',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel2-service-1027-0406',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel2-service-1027-0706',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel2-service-1027-1006',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel2-service-1027-1306',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel2-service-1027-1606',
-'/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/ts-travel2-service-1027-1906'
-           ]
+'test/ts/ts-security-service-1027-1226',
+'test/ts/ts-security-service-1027-1526',
+'test/ts/ts-security-service-1027-1826',
+'test/ts/ts-train-service-1024-1716',
+'test/ts/ts-train-service-1027-0206',
+'test/ts/ts-train-service-1027-0506',
+'test/ts/ts-train-service-1027-0806',
+'test/ts/ts-train-service-1027-1106',
+'test/ts/ts-train-service-1027-1406',
+'test/ts/ts-train-service-1027-1706',
+'test/ts/ts-travel-service-1024-1736',
+'test/ts/ts-travel-service-1027-0226',
+'test/ts/ts-travel-service-1027-0526',
+'test/ts/ts-travel-service-1027-0826',
+'test/ts/ts-travel-service-1027-1126',
+'test/ts/ts-travel-service-1027-1426',
+'test/ts/ts-travel-service-1027-1726',
+'test/ts/ts-travel2-service-1024-1936',
+'test/ts/ts-travel2-service-1027-0406',
+'test/ts/ts-travel2-service-1027-0706',
+'test/ts/ts-travel2-service-1027-1006',
+'test/ts/ts-travel2-service-1027-1306',
+'test/ts/ts-travel2-service-1027-1606',
+'test/ts/ts-travel2-service-1027-1906'
+
+    ]
     for prefix_dir in prefix_dirs:
-        input_dir_log = Path(prefix_dir) / 'abnormal/logs.csv'
-        output_dir_log = Path(prefix_dir) / 'Nezha_log.csv'
-        input_dir_trace = Path(prefix_dir) / 'abnormal/traces.csv'
-        output_dir_trace = Path(prefix_dir) / 'Nezha_traces.csv'
-        input_dir_metric = Path(prefix_dir) / 'abnormal/request_metrics.csv'
-        output_dir_metric = Path(prefix_dir) / 'Nezha_output_files'
-        input_dir_merge = Path(prefix_dir) / 'abnormal/processed_metrics'
-        output_dir_merge = Path(prefix_dir) / 'Nezha_output_files'
-        output_dir_merge_output = Path(prefix_dir) / 'Nezha_merged_output'
+        dir = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir)
+        input_dir_log = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset' / Path(prefix_dir) / 'abnormal/logs.csv'
+        output_dir_log = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_log.csv'
+        input_dir_trace = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset' / Path(prefix_dir) / 'abnormal/traces.csv'
+        output_dir_trace = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_traces.csv'
+        input_dir_metric = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset' / Path(prefix_dir) / 'abnormal/request_metrics.csv'
+        output_dir_metric = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_output_files'
+        input_dir_merge = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset' / Path(prefix_dir) / 'abnormal/processed_metrics'
+        output_dir_merge = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_output_files'
+        output_dir_merge_output = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_merged_output'
+        output_folder = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'abnormal/Nezha_processed_metrics'
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+        if not os.path.exists(output_dir_merge):
+            os.makedirs(output_dir_merge)
+        if not os.path.exists(output_dir_merge_output):
+            os.makedirs(output_dir_merge_output)
         log_trans_runner(input_dir_log, output_dir_log)
         trace_trans_runner(input_dir_trace, output_dir_trace)
         metric_runner(input_dir_metric, output_dir_metric)
-        merge_runner(input_dir_merge, output_dir_merge, output_dir_merge_output)
+        merge_runner(input_dir_merge, output_dir_merge, output_dir_merge_output, output_folder)
 
 if __name__ == "__main__":
     main()

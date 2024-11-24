@@ -81,11 +81,11 @@ def process_trace_data(output_file):
 
     # Create a DataFrame for the results
     results_df = pd.DataFrame(results)
-    file_exists = os.path.isfile('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/Nezha/trace.csv')
+    file_exists = os.path.isfile('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/trace.csv')
 
     # Save the updated DataFrame to a new CSV file
     results_df.to_csv(output_file, index=False)
-    results_df.to_csv('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/ts/Nezha/trace.csv', mode='a', header=not file_exists, index=False)
+    results_df.to_csv('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/trace.csv', mode='a', header=not file_exists, index=False)
 
 
 # Example usage

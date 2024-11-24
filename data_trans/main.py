@@ -27,7 +27,7 @@ def log_trans_runner(input_dir, output_dir, log_output_file):
 
 def trace_trans_runner(input_dir, output_dir, trace_output_path):
     calculate_end_time_unix_nano(input_dir, output_dir)
-    process_trace_data(output_dir, trace_output_file)
+    process_trace_data(output_dir, trace_output_path)
 
 def metric_runner(input_dir, output_dir):
     df = read_csv_file(input_dir)

@@ -122,21 +122,23 @@ def main():
 'test/ts/ts-travel2-service-1027-1906'
 
     ]
+    input_root_path = Path('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset')
+    output_root_path = Path('/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data')
     for prefix_dir in prefix_dirs:
-        dir = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir)
+        dir = output_root_path / Path(prefix_dir)
         log_output_path = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/log.csv'
         trace_output_path = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/trace.csv'
         metric_output_path = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset/test/Nezha/metric'
-        input_dir_log = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset' / Path(prefix_dir) / 'abnormal/logs.csv'
-        output_dir_log = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_log.csv'
-        input_dir_trace = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset' / Path(prefix_dir) / 'abnormal/traces.csv'
-        output_dir_trace = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_traces.csv'
-        input_dir_metric = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset' / Path(prefix_dir) / 'abnormal/request_metrics.csv'
-        output_dir_metric = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_output_files'
-        input_dir_merge = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/RCA_Dataset' / Path(prefix_dir) / 'abnormal/processed_metrics'
-        output_dir_merge = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_output_files'
-        output_dir_merge_output = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'Nezha_merged_output'
-        output_folder = '/Users/phoebe/Library/CloudStorage/OneDrive-CUHK-Shenzhen/processed_data' / Path(prefix_dir) / 'abnormal/Nezha_processed_metrics'
+        input_dir_log = input_root_path / Path(prefix_dir) / 'abnormal/logs.csv'
+        output_dir_log = output_root_path / Path(prefix_dir) / 'Nezha_log.csv'
+        input_dir_trace = input_root_path / Path(prefix_dir) / 'abnormal/traces.csv'
+        output_dir_trace = output_root_path / Path(prefix_dir) / 'Nezha_traces.csv'
+        input_dir_metric = input_root_path / Path(prefix_dir) / 'abnormal/request_metrics.csv'
+        output_dir_metric = output_root_path / Path(prefix_dir) / 'Nezha_output_files'
+        input_dir_merge = input_root_path / Path(prefix_dir) / 'abnormal/processed_metrics'
+        output_dir_merge = output_root_path / Path(prefix_dir) / 'Nezha_output_files'
+        output_dir_merge_output = output_root_path / Path(prefix_dir) / 'Nezha_merged_output'
+        output_folder = output_root_path / Path(prefix_dir) / 'abnormal/Nezha_processed_metrics'
         # log/ trace/ metric_output_path改成最终结果想保存的位置
         # input_dir改前缀用户名
         # output将前缀改成本地任意文件夹

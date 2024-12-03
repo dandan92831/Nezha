@@ -1,15 +1,11 @@
-import csv
-from itertools import product
 import os
 import re
 import datetime
 from os.path import dirname
 from log import Logger
 import logging
-from yaml import FlowMappingEndToken
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import statistics
 import numpy as np
 
@@ -23,82 +19,6 @@ logger = Logger(log_path, logging.DEBUG, __name__).getlog()
 
 
 metric_threshold_dir = "metric_threshold"
-
-
-def get_svc(path):
-    svc = path.rsplit("-", 1)[0]
-    svc = svc.rsplit("-", 1)[0]
-
-    return svc
-
-
-def generate_threshold(metric_dir, trace_file):
-    """
-    fun generate_threshold: calculte mean and std for each metric of each servie
-    write ruslt to metric_threshold_dir/service.csv
-    :parameter
-        metric_dir - metric dir in construction phase
-    """
-    metric_map = {}
-    path_list = os.listdir(metric_dir)
-    for path in path_list:
-        if "metric" in path:
-            svc = path.rsplit("-", 1)[0]
-            svc = svc.rsplit("-", 1)[0]
-            if svc in metric_map:
-                metric_map[svc].append(os.path.join(metric_dir, path))
-            else:
-                metric_map[svc] = [os.path.join(metric_dir, path)]
-    for svc in metric_map:
-        frames = []
-
-        # get pod name
-        for path in path_list:
-            if svc in path:
-                pod_name = path.split("_")[0]
-                print(pod_name)
-                network_mean, network_std = get_netwrok_metric(
-                    trace_file=trace_file, pod_name=pod_name
-                )
-                break
-
-        metric_threshold_file = metric_threshold_dir + "/" + svc + ".csv"
-        for path in metric_map[svc]:
-            frames.append(
-                pd.read_csv(
-                    path,
-                    index_col=False,
-                    usecols=[
-                        "CpuUsageRate(%)",
-                        "MemoryUsageRate(%)",
-                        "SyscallRead",
-                        "SyscallWrite",
-                    ],
-                )
-            )
-        # concat pods of the same service
-        result = pd.concat(frames)
-        with open(metric_threshold_file, "w", newline="") as f:
-            writer = csv.writer(f)
-            header = [
-                "CpuUsageRate(%)",
-                "MemoryUsageRate(%)",
-                "SyscallRead",
-                "SyscallWrite",
-                "NetworkP90(ms)",
-            ]
-            writer.writerow(header)
-            mean_list = []
-            std_list = []
-            for metric in header:
-                if metric == "NetworkP90(ms)":
-                    continue
-                mean_list.append(np.mean(result[metric]))
-                std_list.append(np.std(result[metric]))
-            mean_list.append(network_mean)
-            std_list.append(network_std)
-            writer.writerow(mean_list)
-            writer.writerow(std_list)
 
 
 def get_netwrok_metric(trace_file, pod_name):

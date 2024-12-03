@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
-import pdb
-from email import message
 import os
 import re
 import json
@@ -157,15 +155,13 @@ if __name__ == "__main__":
     for i in range(0, 4):
         ns = "hipster"
         config.load(dirname(__file__) + "/log_template/drain3_" + ns + ".ini")
-        config.profiling_enabled = False
-
         path = dirname(__file__) + "/log_template/" + ns + ".bin"
         persistence = FilePersistence(path)
         template_miner = TemplateMiner(persistence, config=config)
         folder_path_list = ["./rca_data/2022-08-22/log", "./rca_data/2022-08-23/log"]
 
         for folder_path in folder_path_list:
-            for root, dirs, files in os.walk(folder_path):
+            for root, files in os.walk(folder_path):
                 for file in files:
                     log_file = os.path.join(root, file)
                     print(log_file)

@@ -134,19 +134,19 @@ def merge_abnormal_normal_to_overall(prefix_dir):
                 print(f"Error merging {file_name} in {sub_dir}: {e}")
                 
 
-def process_metric(metric_path):
+def process_metric(metric_path, metric_output_path):
     df = pd.read_csv(metric_path)
     df.rename(columns={'TimeUnix': 'Time'}, inplace=True)
     df['Time'] = pd.to_datetime(df['Time'], errors='coerce')
     if df['Time'].isna().any():
         df.dropna(subset=['Time'], inplace=True)
     df['TimeStamp'] = df['Time'].apply(lambda x: int(time.mktime(x.timetuple())))
-    pod_name = os.path.splitext(os.path.basename(file_path))[0]
+    pod_name = os.path.splitext(os.path.basename(metric_path))[0]
     df['PodName'] = pod_name
     first_columns = ['Time', 'TimeStamp', 'PodName']
     other_columns = [col for col in df.columns if col not in first_columns]
     df = df[first_columns + other_columns]
-    output_file_path = os.path.join(metric_path,   os.path.basename(file_path))
+    output_file_path = os.path.join(metric_output_path,   os.path.basename(metric_path))
     df.to_csv(output_file_path, index=False)
 
 
@@ -198,7 +198,7 @@ def main():
             metric_runner(input_dir_metric, output_dir_metric)
             merge_runner(input_dir_merge, output_dir_merge, output_dir_merge_output, output_folder, metric_output_path)
             for metric_path in glob.glob(os.path.join(metric_output_path, '*.csv')):
-                process_metric(metric_path)
+                process_metric(metric_path, metric_output_path)
 
 
 if __name__ == "__main__":
